@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,10 +38,13 @@ public class IndexServlet extends HttpServlet {
 
         List<Task> tasks = em.createNamedQuery("getAllTasks", Task.class).getResultList();
         //メソッドの引数①JPQLの文につけた名前(@NamedQueryのname)②クラスを指定→JPQLの文(一覧表示するデータを取得する)が実行。getResultList()でリスト形式で取得、リストtasksに入れる
-        response.getWriter().append(Integer.valueOf(tasks.size()).toString());
-        ////データの登録件数取得のメソッド
 
         em.close();
+
+        request.setAttribute("tasks", tasks);//データベースから取得した一覧をリクエストスコープにセット
+
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/taskss/index.jsp");
+        rd.forward(request, response);
     }
 
 }
