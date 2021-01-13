@@ -36,7 +36,7 @@ public class IndexServlet extends HttpServlet {
         //DBを管理するオブジェクトの呼び出し
 
         List<Task> tasks = em.createNamedQuery("getAllTasks", Task.class).getResultList();
-        //メソッドの引数にJPQLの文につけた名前(@NamedQueryのname)を指定→JPQLの文(一覧表示するデータを取得する)が実行、リストtasksに入れる
+        //メソッドの引数①JPQLの文につけた名前(@NamedQueryのname)②クラスを指定→JPQLの文(一覧表示するデータを取得する)が実行。getResultList()でリスト形式で取得、リストtasksに入れる
         response.getWriter().append(Integer.valueOf(tasks.size()).toString());
         ////データの登録件数取得のメソッド
 
