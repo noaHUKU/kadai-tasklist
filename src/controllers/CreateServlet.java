@@ -49,6 +49,7 @@ public class CreateServlet extends HttpServlet {
             em.getTransaction().begin();//トランザクション処理の開始
             em.persist(m);//データベースに保存
             em.getTransaction().commit();//データの新規登録を確定（コミット）
+            request.getSession().setAttribute("flush", "登録が完了しました。"); //フラッシュメッセージをセッションスコープに追加
             em.close();//閉じる(DBに接続できる数は限られている)
 
             response.sendRedirect(request.getContextPath() + "/index");//indexページへリダイレクト（遷移）

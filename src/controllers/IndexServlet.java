@@ -43,6 +43,12 @@ public class IndexServlet extends HttpServlet {
 
         request.setAttribute("tasks", tasks);//データベースから取得した一覧をリクエストスコープにセット
 
+        // フラッシュメッセージの入れ替えと削除
+        if(request.getSession().getAttribute("flush") != null) {//セッションスコープに"flush"（フラッシュメッセージ）がnullでない時
+            request.setAttribute("flush", request.getSession().getAttribute("flush"));//リクエストスコープにセット
+            request.getSession().removeAttribute("flush");//セッションスコープから"flush"削除
+        }
+
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/taskss/index.jsp");
         rd.forward(request, response);
     }
