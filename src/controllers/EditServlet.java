@@ -43,8 +43,11 @@ public class EditServlet extends HttpServlet {
         request.setAttribute("task", m);//データベースから取得した該当のIDのタスク1件を登録
         request.setAttribute("_token", request.getSession().getId());//セッションID
 
+        // データが存在しているときのみ（NullPointerExceptionで処理を止めない為の処理）
         // タスクIDをセッションスコープに登録（/update にもデータを送信する（画面移動が一回ではない）のでセッションスコープ）
-        request.getSession().setAttribute("task_id", m.getId());
+        if(m != null) {
+            request.getSession().setAttribute("task_id", m.getId());
+        }
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/taskss/edit.jsp");
         rd.forward(request, response);
