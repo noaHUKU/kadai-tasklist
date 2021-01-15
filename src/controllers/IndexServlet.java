@@ -36,12 +36,29 @@ public class IndexServlet extends HttpServlet {
         EntityManager em = DBUtil.createEntityManager();
         //DBを管理するオブジェクトの呼び出し
 
-        List<Task> tasks = em.createNamedQuery("getAllTasks", Task.class).getResultList();
-        //メソッドの引数①JPQLの文につけた名前(@NamedQueryのname)②クラスを指定→JPQLの文(一覧表示するデータを取得する)が実行。getResultList()でリスト形式で取得、リストtasksに入れる
+        //開くページ数を取得（デフォルトは１ページ目）
+        int page =1;
+        try{
+            page = Integer.parseInt(request.getParameter("page"));//文字列から数値に変更
+        }catch(NumberFormatException e){}//アプリケーションが文字列を数値型に変換しようとしたとき、文字列の形式が正しくない場合にスローされます。
+
+
+        //最大件数と開始位置を指定してメッセージを取得
+        //メソッドの引数にJPQLの文につけた名前(@NamedQueryのname)を指定→JPQLの文(一覧表示するデータを取得する)が実行
+        List<Task> tasks = em.createNamedQuery("getAllTasks", Task.class)
+                              .setFirstResult(15 * (page -1))//何件目からデータを取得するか（配列と同じ0番目から）
+                              .setMaxResults(15)//「データの最大取得件数（今回は15件で固定）」を設定
+                              .getResultList();//リスト形式で取得
+
+        //全件数を取得
+        long tasks_count = (long)em.createNamedQuery("getTasksCount", Long.class)
+                .getSingleResult();//getSingleResult() という “1件だけ取得する” という命令を指定
 
         em.close();
 
         request.setAttribute("tasks", tasks);//データベースから取得した一覧をリクエストスコープにセット
+        request.setAttribute("tasks_count", tasks_count); // 全件数をリクエストスコープへ
+        request.setAttribute("page", page);               // ページ数をリクエストスコープへ
 
         // フラッシュメッセージの入れ替えと削除
         if(request.getSession().getAttribute("flush") != null) {//セッションスコープに"flush"（フラッシュメッセージ）がnullでない時

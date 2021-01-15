@@ -14,11 +14,15 @@ import javax.persistence.Table;
 
 @Entity
 
-//“一覧表示するデータを取得するためのJPQL(=少し特殊なSQL文（SELECT文）)”を用意。
+//JPQL(=少し特殊なSQL文（SELECT文）)を用意。
 @NamedQueries({
   @NamedQuery(
           name = "getAllTasks",//queryのSELECT文の名前
-          query = "SELECT m FROM Task AS m ORDER BY m.id DESC"
+          query = "SELECT m FROM Task AS m ORDER BY m.id DESC"//一覧表示するデータを取得する文
+          ),//閉じ括弧の直後にカンマ、注意
+  @NamedQuery(
+          name = "getTasksCount",
+          query = "SELECT COUNT(m) FROM Task AS m"//データベースのタスクデータの件数を取得する文
           )
 })
 
