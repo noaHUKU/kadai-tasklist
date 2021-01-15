@@ -40,7 +40,7 @@ public class EditServlet extends HttpServlet {
         em.close();
 
         // リクエストスコープに登録
-        request.setAttribute("tasks", m);//データベースから取得した該当のIDのタスク1件
+        request.setAttribute("task", m);//データベースから取得した該当のIDのタスク1件を登録
         request.setAttribute("_token", request.getSession().getId());//セッションID
 
         // タスクIDをセッションスコープに登録（/update にもデータを送信する（画面移動が一回ではない）のでセッションスコープ）

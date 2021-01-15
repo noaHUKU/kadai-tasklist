@@ -62,7 +62,7 @@ public class NewServlet extends HttpServlet {
         //フォームから hidden 要素で送られた値とセッションに格納された値が同一であれば送信を受け付けるようにする
 
         // おまじないとしてのインスタンスを生成、リクエストスコープに格納、入力内容の初期値エラー回避
-        request.setAttribute("task", new Task());
+        request.setAttribute("tasks", new Task());
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/taskss/new.jsp");//ビューの呼び出し
         rd.forward(request, response);
